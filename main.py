@@ -33,7 +33,8 @@ def main():
         st.warning("Please select a version of the application to run.")
 
 def context():
-    openai.api_key = st.secrets["openai_api_key"]    
+    #openai.api_key = st.secrets["openai_api_key"]  
+    openai.api_key = "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"  
     
     # This is a helper function to read PDFs
     def read_ppt(ppt, slides):
@@ -47,20 +48,19 @@ def context():
                             text += "\n"
         return text    
 
-    def ask_gpt3(question, context, temperature, max_tokens, top_p, frequency_penalty, role):
-        message = [
-            {"role": "system", "content": "You have the following information from the paper: "+context},
-            {"role": role, "content": question}
-        ]
+    def ask_gpt3(question, context, temperature, max_tokens, top_p, frequency_penalty, role, messages):
+        message = messages + [
+        {"role": role, "content": question}
+    ]
 
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-16k",
-            messages=message,
-            temperature=temperature,
-            max_tokens=max_tokens,
-            top_p=top_p,
-            frequency_penalty=frequency_penalty
-        )
+        model="gpt-3.5-turbo-16k",
+        messages=message,
+        temperature=temperature,
+        max_tokens=max_tokens,
+        top_p=top_p,
+        frequency_penalty=frequency_penalty
+    )
         return response['choices'][0]['message']['content']
     
     st.title('Ask directly GPT on the context given by a pdf document')
@@ -103,10 +103,21 @@ def context():
                 try:
                     # Use the OpenAI API to get an answer
                     response = ask_gpt3(question, context, temperature, max_tokens, top_p, frequency_penalty, role)
+                    # Extract the conversation history from the response
+                    message_history = response['choices'][0]['message']['content']
+
+                    # Display the conversation history
+                    st.markdown("**Conversation History:**")
+                    for message in message_history:
+                        if message['role'] == 'system':
+                            st.text(f"System: {message['content']}")
+                        else:
+                            st.text(f"User: {message['content']}")
     
                     # Display the answer
                     st.markdown("**Answer:**")
                     st.markdown(response)
+
                 except openai.error.InvalidRequestError as e:
                     # Extract the number of requested tokens and the maximum allowed from the error message
                     max_tokens, tokens_requested = re.findall(r'\d+', str(e))
