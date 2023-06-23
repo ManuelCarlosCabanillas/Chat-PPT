@@ -67,7 +67,7 @@ def context():
 
     # Configure the file uploader
 # Configure the file uploader
-    uploaded_file = st.file_uploader("Upload your PPT file", type="pptx")
+    uploaded_file = st.file_uploader("Upload your PPT file")
     
     if uploaded_file is not None:
         # Read the slides of the PPT
