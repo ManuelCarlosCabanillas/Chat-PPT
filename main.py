@@ -48,8 +48,9 @@ def context():
                             text += "\n"
         return text    
 
-    def ask_gpt3(question, context, temperature, max_tokens, top_p, frequency_penalty, role, messages):
+    def ask_gpt3(question, context, temperature, max_tokens, top_p, frequency_penalty, role, messages=[]):
         message = messages + [
+        {"role": "system", "content": "You have the following information from the paper: " + context},
         {"role": role, "content": question}
     ]
 
@@ -67,7 +68,7 @@ def context():
 
     # Configure the file uploader
 # Configure the file uploader
-    uploaded_file = st.file_uploader("Upload your PPT file")
+    uploaded_file = st.file_uploader("Upload your PPT file", type="pptx")
     
     if uploaded_file is not None:
         # Read the slides of the PPT
