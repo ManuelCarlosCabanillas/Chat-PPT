@@ -78,7 +78,7 @@ def context():
         st.sidebar.markdown("<small>Select the slides you want to use as context</small>", unsafe_allow_html=True)
         temperature = st.sidebar.slider('Temperature', min_value=0.0, max_value=1.0, value=0.5)
         st.sidebar.markdown("""<small>Temperature determines the randomness of the AI's responses. A higher value will make the responses more diverse, but also riskier.</small>""", unsafe_allow_html=True)
-        max_tokens = st.sidebar.slider('Max Tokens', min_value=10, max_value=500, value=150)
+        max_tokens = st.sidebar.slider('Max Tokens', min_value=10, max_value=500, value=500)
         st.sidebar.markdown("""<small>Max tokens limit the length of the AI's response.</small>""", unsafe_allow_html=True)
         top_p = st.sidebar.slider('Top P', min_value=0.0, max_value=1.0, value=0.9)
         st.sidebar.markdown("""<small>Top P is the cumulative probability by the highest-ranking words, which affects the diversity of the response.</small>""", unsafe_allow_html=True)
