@@ -14,7 +14,7 @@ from pptx import Presentation
 
 
 def main():
-    st.title('🧠 GPT-3 for Scientific Papers')
+    st.title('🧠 Chat PPT')
     st.markdown('Choose which version of the application to run:')
     st.markdown('**- Context**: for asking directly gpt 3.5 TURBO model - precission is higher but it is limited to 16K Tokens')
     st.markdown('**- Embeddings**: can load several pdfs documments and transform them into vectors but precission is a little bit lower')
@@ -35,7 +35,7 @@ def main():
 def context():
     openai.api_key = st.secrets["openai_api_key"]    
     
-    # This is a helper function to read PDFs
+    # This is a helper function to read PPTs
     def read_ppt(ppt, slides):
         text = ""
         for slide in slides:
@@ -48,7 +48,7 @@ def context():
         return text    
     def ask_gpt3(question, context, temperature, max_tokens, top_p, frequency_penalty, role):
         message = [
-            {"role": "system", "content": "You have the following information from the paper: "+context},
+            {"role": "system", "content": "You have the following information from the ppt: "+context},
             {"role": role, "content": question}
         ]
         response = openai.ChatCompletion.create(
@@ -61,7 +61,7 @@ def context():
         )
         return response['choices'][0]['message']['content']
     
-    st.title('Ask directly GPT on the context given by a pdf document')
+    st.title('Ask directly GPT on the context given by a ppt document')
 
     # Configure the file uploader
 # Configure the file uploader
